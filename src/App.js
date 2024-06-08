@@ -6,17 +6,17 @@ import * as THREE from 'three';
 import './App.css'; // Assuming you have Tailwind CSS setup in App.css
 
 const objects = [
-    { id: 1, size: 0.5, position: { x: 0, y: 0.5, z: 0 }, connections: [2, 3, 5] },
-    { id: 2, size: 0.5, position: { x: -2, y: 0.5, z: 0 }, connections: [4] },
-    { id: 3, size: 0.5, position: { x: 2, y: 0.5, z: 0 }, connections: [6] },
-    { id: 4, size: 0.5, position: { x: -2, y: 0.5, z: 2 }, connections: [] },
-    { id: 5, size: 0.5, position: { x: 0, y: 0.5, z: 2 }, connections: [7] },
-    { id: 6, size: 0.5, position: { x: 2, y: 0.5, z: 2 }, connections: [] },
-    { id: 7, size: 0.5, position: { x: 0, y: 0.5, z: 4 }, connections: [8, 9, 10, 11] },
-    { id: 8, size: 0.5, position: { x: -2, y: 0.5, z: 4 }, connections: [] },
-    { id: 9, size: 0.5, position: { x: 2, y: 0.5, z: 4 }, connections: [] },
-    { id: 10, size: 0.5, position: { x: -4, y: 0.5, z: 4 }, connections: [] },
-    { id: 11, size: 0.5, position: { x: 4, y: 0.5, z: 4 }, connections: [] }
+    { id: 1, size: 0.5, position: { x: 0, y: 0, z: 0 }, connections: [2, 3] },
+    { id: 2, size: 0.5, position: { x: -2, y: 0, z: 2 }, connections: [4, 5] },
+    { id: 3, size: 0.5, position: { x: 2, y: 0, z: 2 }, connections: [6, 7] },
+    { id: 4, size: 0.5, position: { x: -4, y: 0, z: 4 }, connections: [] },
+    { id: 5, size: 0.5, position: { x: 0, y: 0, z: 4 }, connections: [] },
+    { id: 6, size: 0.5, position: { x: 2, y: 0, z: 4 }, connections: [] },
+    { id: 7, size: 0.5, position: { x: 4, y: 0, z: 4 }, connections: [] },
+    { id: 8, size: 0.5, position: { x: -6, y: 0, z: 6 }, connections: [] },
+    { id: 9, size: 0.5, position: { x: 6, y: 0, z: 6 }, connections: [] },
+    { id: 10, size: 0.5, position: { x: -8, y: 0, z: 8 }, connections: [] },
+    { id: 11, size: 0.5, position: { x: 8, y: 0, z: 8 }, connections: [] }
 ];
 
 const objectMap = {};
@@ -34,7 +34,7 @@ function Node({ size, position, id }) {
     return (
         <group>
             <animated.mesh ref={mesh} position={[position.x, position.y, position.z]} scale={scale} castShadow receiveShadow>
-                <cylinderGeometry args={[0.7, 0.7, 1, 32]} />
+                <cylinderGeometry args={[0.5, 0.5, 1, 32]} />
                 <meshStandardMaterial color="black" metalness={1} roughness={0.1} />
                 <Html position={[0, 0.6, 0]}>
                     <div style={{ color: 'white', fontSize: 10, padding: '0.1rem', textAlign: 'center', whiteSpace: 'nowrap', pointerEvents: 'none' }}>{boxText}</div>
@@ -84,7 +84,7 @@ function Pipe({ start, end }) {
     );
 }
 
-function MetallicGrid() {
+function Grid() {
     const gridRef = useRef();
 
     useFrame(() => {
@@ -94,11 +94,7 @@ function MetallicGrid() {
     });
 
     return (
-        <mesh ref={gridRef} rotation={[-Math.PI / 2, 0, 0]}>
-            <planeGeometry args={[20, 20]} />
-            <meshStandardMaterial color="black" metalness={1} roughness={0.1} />
-            <gridHelper args={[20, 20, 'white', 'red']} />
-        </mesh>
+        <gridHelper ref={gridRef} args={[20, 20, 'red', 'green']} />
     );
 }
 
@@ -167,7 +163,7 @@ export default function App() {
                 <pointLight position={[0, 5, 0]} intensity={0.5} color="yellow" />
                 <OrbitControls />
                 <Environment preset="city" />
-                <MetallicGrid />
+                <Grid />
                 <Scene />
             </Canvas>
         </div>
