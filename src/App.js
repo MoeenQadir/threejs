@@ -34,8 +34,8 @@ function Node({ size, position, id }) {
     return (
         <group>
             <animated.mesh ref={mesh} position={[position.x, position.y - 0.5, position.z]} scale={scale} castShadow receiveShadow>
-                <cylinderGeometry args={[1.5, 1.5, 1, 62]} />
-                <meshStandardMaterial color="gray" metalness={1} roughness={0.1} />
+                <cylinderGeometry color="red" args={[1.5, 1.5, 1, 62]} />
+                <meshStandardMaterial color="red" metalness={1} roughness={0.1} />
                 <Html position={[0, 0.55, 0]} center>
                     <div style={{ color: 'white', fontSize: '10px', textAlign: 'center', whiteSpace: 'nowrap', pointerEvents: 'none' }}>
                         {boxText}
