@@ -1,100 +1,69 @@
-import React, { useRef, useEffect, useState, useMemo } from 'react';
+import React, {useRef, useEffect, useState, useMemo} from 'react';
 import { Canvas, useFrame } from '@react-three/fiber';
-import { OrbitControls, Environment, Html } from '@react-three/drei';
+import { OrbitControls, useTexture, Environment } from '@react-three/drei';
 import { animated, useSpring, config } from '@react-spring/three';
 import * as THREE from 'three';
 import './App.css'; // Assuming you have Tailwind CSS setup in App.css
+import { Html } from '@react-three/drei';
 
+// Example data
 const objects = [
-    { id: 1, size: 0.5, position: { x: 0, y: 0, z: 0 }, connections: [2, 3] },
-    { id: 2, size: 0.5, position: { x: -2, y: 0, z: 2 }, connections: [4, 5] },
-    { id: 3, size: 0.5, position: { x: 2, y: 0, z: 2 }, connections: [6, 7] },
-    { id: 4, size: 0.5, position: { x: -4, y: 0, z: 4 }, connections: [] },
-    { id: 5, size: 0.5, position: { x: 0, y: 0, z: 4 }, connections: [] },
-    { id: 6, size: 0.5, position: { x: 2, y: 0, z: 4 }, connections: [] },
-    { id: 7, size: 0.5, position: { x: 4, y: 0, z: 4 }, connections: [] },
-    { id: 8, size: 0.5, position: { x: -6, y: 0, z: 6 }, connections: [] },
-    { id: 9, size: 0.5, position: { x: 6, y: 0, z: 6 }, connections: [] },
-    { id: 10, size: 0.5, position: { x: -8, y: 0, z: 8 }, connections: [] },
-    { id: 11, size: 0.5, position: { x: 8, y: 0, z: 8 }, connections: [] }
+    { id: 1, size: 1, position: { x: 0, y: 0, z: 0 }, connections: [2, 3] },
+    { id: 2, size: 1, position: { x: -2, y: 0, z: 2 }, connections: [4, 5] },
+    { id: 3, size: 1, position: { x: 2, y: 0, z: 2 }, connections: [6, 7] },
+    { id: 4, size: 1, position: { x: -4, y: 0, z: 4 }, connections: [] },
+    { id: 5, size: 1, position: { x: 0, y: 0, z: 4 }, connections: [] },
+    { id: 6, size: 1, position: { x: 2, y: 0, z: 4 }, connections: [] },
+    { id: 7, size: 1, position: { x: 4, y: 0, z: 4 }, connections: [] }
 ];
 
 const objectMap = {};
 
-function Node({ size, position, id }) {
+function Box({ size, position, id }) {
     const mesh = useRef();
-    const boxText = useMemo(() => `Node ${id}`, [id]);
+    const [rotationSpeed] = useState(0); // Set rotation speed to 0 to stop rotation
 
+    // Random text for each box
+    const boxText = useMemo(() => `Box ${id}`, [id]);
+
+    // Spring animation
     const { scale } = useSpring({
         from: { scale: [0, 0, 0] },
         to: { scale: [size, size, size] },
-        config: config.default
+        config: config.default // Use default config for no animation
     });
 
     return (
         <group>
             <animated.mesh ref={mesh} position={[position.x, position.y, position.z]} scale={scale} castShadow receiveShadow>
-                <cylinderGeometry args={[0.5, 0.5, 1, 32]} />
-                <meshStandardMaterial color="black" metalness={1} roughness={0.1} />
-                <Html position={[0, 0.6, 0]}>
-                    <div style={{ color: 'white', fontSize: 10, padding: '0.1rem', textAlign: 'center', whiteSpace: 'nowrap', pointerEvents: 'none' }}>{boxText}</div>
+                <boxGeometry args={[1, 1, 1]} />
+                <meshStandardMaterial color="blue" metalness={0.8} roughness={0.2} /> {/* Remove texture */}
+                {/* Position the text relative to the front face of the cube */}
+                <Html position={[-0.3, 0, 0]}>
+                    <div style={{ color: 'white', fontSize: 10, padding: '0.1rem' }}>Text Here</div>
                 </Html>
             </animated.mesh>
         </group>
     );
 }
 
+
+
+
+
+
 function Pipe({ start, end }) {
     const path = new THREE.CatmullRomCurve3([start, end]);
     const tubularSegments = 40;
-    const radius = 0.05;
+    const radius = 0.1;
     const radialSegments = 4;
     const closed = false;
     const tubeGeometry = new THREE.TubeGeometry(path, tubularSegments, radius, radialSegments, closed);
 
-    const neonMaterial = new THREE.ShaderMaterial({
-        uniforms: {
-            color: { value: new THREE.Color('cyan') },
-            time: { value: 1.0 }
-        },
-        vertexShader: `
-            varying vec3 vUv; 
-            void main() {
-                vUv = position; 
-                gl_Position = projectionMatrix * modelViewMatrix * vec4(position,1.0); 
-            }
-        `,
-        fragmentShader: `
-            uniform vec3 color; 
-            uniform float time; 
-            varying vec3 vUv; 
-            void main() {
-                float glow = sin(vUv.y * 3.0 + time * 3.0) * 0.5 + 0.5; 
-                gl_FragColor = vec4(color * glow, 1.0); 
-            }
-        `
-    });
-
-    useFrame(({ clock }) => {
-        neonMaterial.uniforms.time.value = clock.getElapsedTime();
-    });
-
     return (
-        <mesh geometry={tubeGeometry} castShadow receiveShadow material={neonMaterial} />
-    );
-}
-
-function Grid() {
-    const gridRef = useRef();
-
-    useFrame(() => {
-        if (gridRef.current) {
-            gridRef.current.position.set(0, -1, 0);
-        }
-    });
-
-    return (
-        <gridHelper ref={gridRef} args={[20, 20, 'red', 'green']} />
+        <mesh geometry={tubeGeometry} castShadow receiveShadow>
+            <meshStandardMaterial color="gold" metalness={1} roughness={0.5} />
+        </mesh>
     );
 }
 
@@ -105,7 +74,7 @@ function Scene() {
         objects.forEach((obj, index) => {
             setTimeout(() => {
                 setSteps(prev => [...prev, obj]);
-            }, index * 1000);
+            }, index * 1000); // Adjust the delay time as needed
         });
 
         objects.forEach(obj => {
@@ -113,11 +82,12 @@ function Scene() {
         });
     }, []);
 
+
     return (
         <>
             {steps.map(obj => (
                 <React.Fragment key={obj.id}>
-                    <Node size={obj.size} position={obj.position} id={obj.id} />
+                    <Box size={obj.size} position={obj.position} />
                     {obj.connections.map(connId => {
                         const start = objectMap[obj.id];
                         const end = objectMap[connId];
@@ -158,12 +128,9 @@ export default function App() {
                     shadow-camera-right={10}
                     shadow-camera-top={10}
                     shadow-camera-bottom={-10}
-                    color="red"
                 />
-                <pointLight position={[0, 5, 0]} intensity={0.5} color="yellow" />
                 <OrbitControls />
                 <Environment preset="city" />
-                <Grid />
                 <Scene />
             </Canvas>
         </div>
