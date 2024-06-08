@@ -1,3 +1,28 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+body {
+    margin: 0;
+    overflow: hidden;
+}
+
+.bg-black {
+    background-color: black;
+}
+
+.text-white {
+    color: white;
+}
+
+.p-1 {
+    padding: 0.25rem;
+}
+
+.text-center {
+    text-align: center;
+}
+
+.rounded {
+    border-radius: 0.25rem;
+}
