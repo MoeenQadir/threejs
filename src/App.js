@@ -3,20 +3,20 @@ import { Canvas, useFrame } from '@react-three/fiber';
 import { OrbitControls, Environment, Html } from '@react-three/drei';
 import { animated, useSpring, config } from '@react-spring/three';
 import * as THREE from 'three';
-import './App.css';
+import './App.css'; // Assuming you have Tailwind CSS setup in App.css
 
 const objects = [
-    { id: 1, size: 0.5, position: { x: 0, y: -0.1, z: 0 }, connections: [2, 3, 5] },
-    { id: 2, size: 0.5, position: { x: -2, y: -0.1, z: 0 }, connections: [4] },
-    { id: 3, size: 0.5, position: { x: 2, y: -0.1, z: 0 }, connections: [6] },
-    { id: 4, size: 0.5, position: { x: -2, y: -0.1, z: 2 }, connections: [] },
-    { id: 5, size: 0.5, position: { x: 0, y: -0.1, z: 2 }, connections: [7] },
-    { id: 6, size: 0.5, position: { x: 2, y: -0.1, z: 2 }, connections: [] },
-    { id: 7, size: 0.5, position: { x: 0, y: -0.1, z: 4 }, connections: [8, 9, 10, 11] },
-    { id: 8, size: 0.5, position: { x: -2, y: -0.1, z: 4 }, connections: [] },
-    { id: 9, size: 0.5, position: { x: 2, y: -0.1, z: 4 }, connections: [] },
-    { id: 10, size: 0.5, position: { x: -4, y: -0.1, z: 4 }, connections: [] },
-    { id: 11, size: 0.5, position: { x: 4, y: -0.1, z: 4 }, connections: [] }
+    { id: 1, size: 0.5, position: { x: 0, y: 0.1, z: 0 }, connections: [2, 3, 5] },
+    { id: 2, size: 0.5, position: { x: -2, y: 0.1, z: 0 }, connections: [4] },
+    { id: 3, size: 0.5, position: { x: 2, y: 0.1, z: 0 }, connections: [6] },
+    { id: 4, size: 0.5, position: { x: -2, y: 0.1, z: 2 }, connections: [] },
+    { id: 5, size: 0.5, position: { x: 0, y: 0.1, z: 2 }, connections: [7] },
+    { id: 6, size: 0.5, position: { x: 2, y: 0.1, z: 2 }, connections: [] },
+    { id: 7, size: 0.5, position: { x: 0, y: 0.1, z: 4 }, connections: [8, 9, 10, 11] },
+    { id: 8, size: 0.5, position: { x: -2, y: 0.1, z: 4 }, connections: [] },
+    { id: 9, size: 0.5, position: { x: 2, y: 0.1, z: 4 }, connections: [] },
+    { id: 10, size: 0.5, position: { x: -4, y: 0.1, z: 4 }, connections: [] },
+    { id: 11, size: 0.5, position: { x: 4, y: 0.1, z: 4 }, connections: [] }
 ];
 
 const objectMap = {};
@@ -35,9 +35,9 @@ function Node({ size, position, id }) {
         <group>
             <animated.mesh ref={mesh} position={[position.x, position.y, position.z]} scale={scale} castShadow receiveShadow>
                 <cylinderGeometry args={[1.5, 1.5, 1, 62]} />
-                <meshStandardMaterial color="red" metalness={0.8} roughness={0.6} />
+                <meshStandardMaterial color="red" metalness={1} roughness={0.1} />
                 <Html position={[0, 0.6, 0]} center>
-                    <div style={{ color: 'white', fontSize: '10px', textAlign: 'center', whiteSpace: 'nowrap' }}>
+                    <div style={{ color: 'white', fontSize: '10px', textAlign: 'center', whiteSpace: 'nowrap', pointerEvents: 'none' }}>
                         {boxText}
                     </div>
                 </Html>
