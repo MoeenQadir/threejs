@@ -33,10 +33,10 @@ function Node({ size, position, id }) {
 
     return (
         <group>
-            <animated.mesh ref={mesh} position={[position.x, position.y - 0.5, position.z]} scale={scale} castShadow receiveShadow>
-                <cylinderGeometry color="red" args={[1.5, 1.5, 1, 62]} />
+            <animated.mesh ref={mesh} position={[position.x, position.y, position.z]} scale={scale} castShadow receiveShadow>
+                <cylinderGeometry args={[1.5, 1.5, 1, 62]} />
                 <meshStandardMaterial color="red" metalness={1} roughness={0.1} />
-                <Html position={[0, 0.55, 0]} center>
+                <Html position={[0, 0.6, 0]} center>
                     <div style={{ color: 'white', fontSize: '10px', textAlign: 'center', whiteSpace: 'nowrap', pointerEvents: 'none' }}>
                         {boxText}
                     </div>
@@ -127,7 +127,7 @@ function Scene() {
                         const start = objectMap[obj.id];
                         const end = objectMap[connId];
                         if (start && end) {
-                            return <Pipe key={`${obj.id}-${connId}`} start={new THREE.Vector3(start.x, start.y - 0.5, start.z)} end={new THREE.Vector3(end.x, end.y - 0.5, end.z)} />;
+                            return <Pipe key={`${obj.id}-${connId}`} start={new THREE.Vector3(start.x, start.y, start.z)} end={new THREE.Vector3(end.x, end.y, end.z)} />;
                         } else {
                             console.warn(`Cannot create connection from ${obj.id} to ${connId}`);
                             return null;
