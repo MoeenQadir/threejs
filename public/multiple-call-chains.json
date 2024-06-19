@@ -1,0 +1,76 @@
+{
+  "center": {
+    "color": "#99B068",
+    "text": "Center Cube",
+    "callChains": [
+      {
+        "color": "#99B068",
+        "text": "Chain 1 - Cube One",
+        "cubes": [
+          {
+            "color": "#99B068",
+            "text": "Chain 1 - Cube Two"
+          },
+          {
+            "color": "#99B068",
+            "text": "Chain 1 - Cube Three",
+            "cubes": [
+              {
+                "color": "#99B068",
+                "text": "Chain 1 - Cube Four"
+              },
+              {
+                "color": "#99B068",
+                "text": "Chain 1 - Cube Five",
+                "cubes": [
+                  {
+                    "color": "#99B068",
+                    "text": "Chain 1 - Cube Six"
+                  },
+                  {
+                    "color": "#99B068",
+                    "text": "Chain 1 - Cube Seven"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "color": "#99B068",
+        "text": "Chain 2 - Cube One",
+        "cubes": [
+          {
+            "color": "#99B068",
+            "text": "Chain 2 - Cube Two"
+          },
+          {
+            "color": "#99B068",
+            "text": "Chain 2 - Cube Three",
+            "cubes": [
+              {
+                "color": "#99B068",
+                "text": "Chain 2 - Cube Four"
+              },
+              {
+                "color": "#99B068",
+                "text": "Chain 2 - Cube Five",
+                "cubes": [
+                  {
+                    "color": "#99B068",
+                    "text": "Chain 2 - Cube Six"
+                  },
+                  {
+                    "color": "#99B068",
+                    "text": "Chain 2 - Cube Seven"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}

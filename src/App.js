@@ -6,19 +6,26 @@ import * as THREE from 'three';
 import { ChromePicker } from 'react-color';
 import './App.css'; // Assuming you have Tailwind CSS setup in App.css
 
+const centralNodeId = 1; // ID of the central node
+const radius = 5; // Radius of the circle
 const initialObjects = [
-    { id: 1, size: 0.5, position: { x: 0, y: 0, z: 0 }, connections: [2, 3, 5], color: 'red', label: 'Node 1' },
-    { id: 2, size: 0.5, position: { x: -2, y: 0, z: 0 }, connections: [4], color: 'red', label: 'Node 2' },
-    { id: 3, size: 0.5, position: { x: 2, y: 0, z: 0 }, connections: [6], color: 'red', label: 'Node 3' },
-    { id: 4, size: 0.5, position: { x: -2, y: 0, z: 2 }, connections: [], color: 'red', label: 'Node 4' },
-    { id: 5, size: 0.5, position: { x: 0, y: 0, z: 2 }, connections: [7], color: 'red', label: 'Node 5' },
-    { id: 6, size: 0.5, position: { x: 2, y: 0, z: 2 }, connections: [], color: 'red', label: 'Node 6' },
-    { id: 7, size: 0.5, position: { x: 0, y: 0, z: 4 }, connections: [8, 9, 10, 11], color: 'red', label: 'Node 7' },
-    { id: 8, size: 0.5, position: { x: -2, y: 0, z: 4 }, connections: [], color: 'red', label: 'Node 8' },
-    { id: 9, size: 0.5, position: { x: 2, y: 0, z: 4 }, connections: [], color: 'red', label: 'Node 9' },
-    { id: 10, size: 0.5, position: { x: -4, y: 0, z: 4 }, connections: [], color: 'red', label: 'Node 10' },
-    { id: 11, size: 0.5, position: { x: 4, y: 0, z: 4 }, connections: [], color: 'red', label: 'Node 11' }
+    { id: 1, size: 0.5, position: { x: 0, y: 0, z: 0 }, connections: [2, 3, 4, 5, 6, 7, 8, 9, 10, 11], color: '#99B068', label: 'Central Node' }
 ];
+
+const numNodes = 10;
+const angleStep = (2 * Math.PI) / numNodes;
+
+for (let i = 0; i < numNodes; i++) {
+    const angle = i * angleStep;
+    initialObjects.push({
+        id: 2 + i,
+        size: 0.5,
+        position: { x: radius * Math.cos(angle), y: 0, z: radius * Math.sin(angle) },
+        connections: [],
+        color: '#99B068',
+        label: `Node ${2 + i}`
+    });
+}
 
 const objectMap = {};
 
@@ -39,7 +46,7 @@ function Node({ size, position, id, color, label, onClick }) {
                 <cylinderGeometry args={[1.5, 1.5, 1, 32]} />
                 <meshStandardMaterial color={color} metalness={0.6} roughness={0.4} />
                 <Html position={[0, 1, 0]} center>
-                    <div style={{ color: 'white', fontSize: '10px', textAlign: 'center', whiteSpace: 'nowrap', pointerEvents: 'none' }}>
+                    <div style={{ color: 'black', fontSize: '10px', textAlign: 'center', whiteSpace: 'nowrap', pointerEvents: 'none' }}>
                         {label}
                     </div>
                 </Html>
@@ -99,7 +106,7 @@ function MetallicGrid() {
 
     return (
         <mesh ref={gridRef} rotation={[-Math.PI / 2, 0, 0]}>
-            <planeGeometry args={[20, 20]} />
+            <planeGeometry args={[30, 30]} />
             <meshStandardMaterial color="#282828" metalness={1} roughness={0.1} />
         </mesh>
     );
@@ -227,17 +234,17 @@ export default function App() {
                         )}
                     </div>
                 </div>
-                  <div className={"grid grid-cols-2 gap-2"}>
-                      <div>
-                          <label>Connections</label>
-                          <input type="text" name="connections" value={form.connections} onChange={handleChange} className="w-full p-1 border border-gray-300 rounded" />
-                      </div>
-                      <div>
-                          <label>Label</label>
-                          <input type="text" name="label" value={form.label} onChange={handleChange} required className="w-full p-1 border border-gray-300 rounded" />
-                      </div>
+                <div className={"grid grid-cols-2 gap-2"}>
+                    <div>
+                        <label>Connections</label>
+                        <input type="text" name="connections" value={form.connections} onChange={handleChange} className="w-full p-1 border border-gray-300 rounded" />
+                    </div>
+                    <div>
+                        <label>Label</label>
+                        <input type="text" name="label" value={form.label} onChange={handleChange} required className="w-full p-1 border border-gray-300 rounded" />
+                    </div>
 
-                  </div>
+                </div>
                 <div className={"flex justify-center items-center"}>
                     <button type="submit" className="mt-4 bg-[#dd000f] text-white py-2 px-4 rounded">{selectedId !== null ? 'Update Node' : 'Add Node'}</button>
                 </div>
@@ -250,7 +257,7 @@ export default function App() {
             <Canvas
                 shadows
                 gl={{ alpha: false, antialias: true }}
-                camera={{ position: [0, 5, 10], fov: 60 }}
+                camera={{ position: [0, 15, 10], fov: 35 }}
                 onCreated={({ gl }) => {
                     gl.shadowMap.enabled = true;
                     gl.shadowMap.type = THREE.PCFSoftShadowMap;
